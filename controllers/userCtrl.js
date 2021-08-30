@@ -96,6 +96,8 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+
+    //get with parameter
     getUser: async (req, res) =>{
         try {
             const user = await Users.findById(req.user.id).select('-password')
