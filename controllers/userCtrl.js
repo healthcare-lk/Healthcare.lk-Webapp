@@ -57,6 +57,23 @@ const userCtrl = {
         }
         
     }
+},
+login: async(req, res) =>{
+    try {
+        const {email, password} = req.body;
+
+        const user = await Users.findOne({email})
+        if(!user) return res.status(400).json({msg: "User does not exist."})
+
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch) return res.status(400).json({msg: "Incorrect password."})
+
+        res.json({"Login Success!"})
+
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+
+    }
 }
 
 const createAccessToken = (user) =>{
