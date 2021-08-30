@@ -93,7 +93,8 @@ const userCtrl = {
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
-    }
+    },
+    
 }
 
 const createAccessToken = (user) =>{
