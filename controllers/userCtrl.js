@@ -1,6 +1,7 @@
 const Users = require('../models/userModel')
 const userCtrl = require('../controllers/userCtrl')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const userCtrl = {
     register: async (req, res) =>{
@@ -39,25 +40,7 @@ const userCtrl = {
         }
     },
 
-    refreshToken: (req, res) =>{
-        try {
-            const rf_token = req.cookies.refreshtoken;
-            if(!rf_token) return res.status(400).json({msg: "Please Login or Register"})
-
-            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) =>{
-                if(err) return res.status(400).json({msg: "Please Login or Register"})
-                const accesstoken = createAccessToken({id: user.id})
-                res.json({accesstoken})
-            })
-
-
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-
-        }
-        
-    },
-
+    
     login: async(req, res) =>{
         try {
             const {email, password} = req.body;
@@ -86,8 +69,6 @@ const userCtrl = {
         }
     },
 
-
-
     logout: async (req, res) =>{
         try {
             res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
@@ -97,8 +78,8 @@ const userCtrl = {
         }
     },
 
-    //get with parameter
-    getUser: async (req, res) =>{
+     //get with parameter
+     getUser: async (req, res) =>{
         try {
             const user = await Users.findById(req.user.id).select('-password')
             if(!user) return res.status(400).json({msg: "User does not exist."})
@@ -106,11 +87,31 @@ const userCtrl = {
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
+    },
+    refreshToken: (req, res) =>{
+        try {
+            const rf_token = req.cookies.refreshtoken;
+            if(!rf_token) return res.status(400).json({msg: "Please Login or Register"})
+
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) =>{
+                if(err) return res.status(400).json({msg: "Please Login or Register"})
+                const accesstoken = createAccessToken({id: user.id})
+                res.json({accesstoken})
+            })
+
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+
+        }
+        
     }
+
+   
+
+   
     
-}
-
-
+}    
 
 const createAccessToken = (user) =>{
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '11m'})
