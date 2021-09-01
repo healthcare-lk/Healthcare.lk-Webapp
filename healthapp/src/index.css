@@ -35,8 +35,6 @@ button{
 
 /*--------------Header--------------*/
 @import url("./components/headers/header.css");
-<<<<<<< Updated upstream
-=======
 
 /*--------------Products------------*/
 @import url("./components/mainpages/products/products.css");
@@ -58,4 +56,4 @@ button{
 
 /*------------Create Product----------*/
 @import url("./components/mainpages/createProduct/createProduct.css");
->>>>>>> Stashed changes
+
