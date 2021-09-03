@@ -4,6 +4,7 @@ const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
 const fs = require('fs')
 
+
 // upload a image on cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -11,10 +12,8 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 })
 
-
-//upload an image only admin can use
-
-router.post('/upload', auth , authAdmin, (req, res) =>{
+//upload image only admin can use
+router.post('/upload',auth , authAdmin, (req, res) =>{
     
     try {
         console.log(req.files)
@@ -32,6 +31,7 @@ router.post('/upload', auth , authAdmin, (req, res) =>{
             removeTmp(file.tempFilePath)
             return res.status(400).json({msg: "File format is incorrect."})
         }
+        
 
         cloudinary.v2.uploader.upload(file.tempFilePath, {folder: "test"}, async(err, result) =>{
             if(err) throw err;
@@ -40,7 +40,7 @@ router.post('/upload', auth , authAdmin, (req, res) =>{
             res.json({public_id: result.public_id, url: result.secure_url})
         })
 
-        
+
     } catch (err) {
         return res.status(500).json({msg: err.message})
     }
@@ -57,7 +57,7 @@ router.post('/destroy',auth , authAdmin, (req, res) =>{
 
             res.json({msg: "Deleted Image"})
         })
-
+        
     } catch (err) {
         return res.status(500).json({msg: err.message})
         
@@ -66,12 +66,10 @@ router.post('/destroy',auth , authAdmin, (req, res) =>{
      
 })
 
-
-
 const removeTmp = (path) =>{
     fs.unlink(path, err=>{
         if(err) throw err;
     })
+}
+
 module.exports = router
-
-
