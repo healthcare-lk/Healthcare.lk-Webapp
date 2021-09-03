@@ -116,6 +116,24 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+
+    //update user
+
+    updateUser: async (req, res) => {
+        try {
+           
+            const {name, password} = req.body
+            await Users.findOneAndUpdate({_id: req.user.id}, {
+                name, password
+            })
+
+            res.json({msg: "Update Success!"})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+
+        }
+    },
+    
     history: async(req, res) =>{
         try {
             const history =await Payments.find({user_id: req.user.id})
