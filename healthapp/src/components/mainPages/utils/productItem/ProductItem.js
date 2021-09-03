@@ -30,11 +30,7 @@ function ProductItem({product, isAdmin, token, callback, setCallback}) {
 
             <div className="product_box">
                 <h2 title={product.title}>{product.title}</h2>
-
-                
-
-                <span>Rs.{product.price}</span>
-
+                <span>Rs. {product.price}</span>
                 <p>{product.description}</p>
 
             </div>

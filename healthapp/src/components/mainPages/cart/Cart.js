@@ -87,7 +87,6 @@ function Cart() {
                  <div className="box-detail">
                     <h2>{product.title}</h2>
 
-
                     <h3>Rs. {product.price * product.quantity}</h3>
                     <p>{product.description}</p>
                     <p>{product.content}</p>
@@ -108,7 +107,7 @@ function Cart() {
            }
 
            <div className="total">
-               <h3>Total: Rs{total}</h3>
+               <h3>Total: Rs. {total}</h3>
                <PaypalButton 
                total={total}
                tranSuccess={tranSuccess}/>
